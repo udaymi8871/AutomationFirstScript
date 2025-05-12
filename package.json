@@ -1,23 +1,15 @@
 {
   "name": "cyprese2e",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/udaymi8871/AutomationFirstScript.git"
-  },
-  "author": "uday",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/udaymi8871/AutomationFirstScript/issues"
-  },
-  "homepage": "https://github.com/udaymi8871/AutomationFirstScript#readme",
-  "description": "",
   "devDependencies": {
-    "cypress": "^14.3.3",
-    "cypress-mochawesome-reporter": "^3.8.2"
+    "cypress": "^14.3.0",
+    "cypress-xpath": "^2.0.1"
   }
 }
