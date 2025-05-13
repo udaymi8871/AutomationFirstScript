@@ -23,7 +23,7 @@ export class registerPage {
 
         cy.get(this.weblocators.firstName).type(FName);
     }
-    enterlastName(LName) {
+    enterLastName(LName) {
 
         cy.get(this.weblocators.lastName).type(LName);
     }
@@ -41,11 +41,11 @@ export class registerPage {
         cy.get(this.weblocators.passwordConfirm).type(password);
 
     }
-    selectCheckbox() {
+    clickPolicyCheckbox() {
 
         cy.get(this.weblocators.policyCheckbox).check()
     }
-    clickOnContinue() {
+    clickContinueButton() {
         cy.get(this.weblocators.continue).click()
     }
 
