@@ -17,6 +17,7 @@
   "homepage": "https://github.com/udaymi8871/AutomationFirstScript#readme",
   "description": "",
   "devDependencies": {
-    "cypress": "^14.3.3"
+    "cypress": "^14.3.3",
+    "cypress-mochawesome-reporter": "^3.8.2"
   }
 }

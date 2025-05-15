@@ -1,0 +1,17 @@
+{
+    "login": 
+    {
+      "username": "uday+3@kodnest.com",
+      "password": "Uday@123"
+    },
+    
+    "product": 
+    {
+      "productName": "MacBook"
+    },
+    "message":
+    {
+      "successMessage": "Success: You have added MacBook to your shopping cart!"
+    }
+    
+  }
