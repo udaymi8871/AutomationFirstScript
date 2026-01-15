@@ -1,100 +1,108 @@
-require('cypress-xpath');
-describe('Profile', () => {
-    it('should log in successfully with valid credentials and access profile menu', async () => {
-        cy.viewport(1400, 877);
-        cy.visit('https://app.kodnest.in/login', { timeout: 30000 }); // Added timeout for visit
-        // Wait for the page to load
-        cy.get('body', { timeout: 10000 }).should('be.visible');
-        // Wait for the login button to be visible
-        cy.get('#login-submit-button', { timeout: 10000 })
-            .should('be.visible')
-            .should('not.be.disabled');
+import user from "../../../cypress/fixtures/user.json";
+import basicDetail from "../../../cypress/fixtures/basicdetail.json";
+import ugDetail from "../../../cypress/fixtures/UGDetails.json";
+import academicDetail from "../../../cypress/fixtures/academicdetail.json";
 
-        // Wait for loader to disappear
-        cy.get('.loader', { timeout: 10000 }).should('not.exist');
+import "cypress-file-upload";
 
-        // Wait for the email input to be visible
-        cy.get('#email-input', { timeout: 10000 });
+describe("Profile Personal Details Update", () => {
+  beforeEach(() => {
+    cy.viewport(1400, 877);
+    cy.login(user.email, user.password);
+  });
 
-        // Type email
-        cy.get('#email-input', { timeout: 10000 })
-            .should('be.visible')
-            .click()
-            .type('uday+practicebatch1-b@kodnest.com', { timeout: 10000 });
+  it("updates personal profile details successfully", () => {
+    cy.get("button[aria-haspopup='menu']", { timeout: 10000 })
+      .should("be.visible")
+      .click();
 
-        // Type password
-        cy.get('#password-input', { timeout: 10000 })
-            .should('be.visible')
-            .should('not.be.disabled')
-            .click()
-            .type('Uday@123', { timeout: 10000 });
+    cy.get("#profile-menu-item")
+      .filter(":visible")
+      .should("have.length", 1)
+      .click();
 
-        // Click login
-        cy.get('#login-submit-button', { timeout: 10000 }).click();
+    cy.get("#section-personaldetails", { timeout: 10000 })
+      .should("be.visible")
+      .find("button")
+      .contains(/edit/i)
+      .click();
 
-        // Wait for profile avatar to be visible and click
-        cy.get('img.react-gravatar.rounded-full', { timeout: 10000 })
-            .should('be.visible')
-            .click();
+    cy.get("form", { timeout: 10000 }).should("be.visible");
 
-        // // Click actual profile menu item if needed
-        cy.get('#profile-menu-item', { timeout: 10000 })
-            .should('be.visible')
-            .click();
+    // Basic details
+    cy.get("input[name='primary_contact']")
+      .clear()
+      .type(basicDetail.contacts.primary);
 
+    cy.get("input[name='whatsapp_contact']")
+      .clear()
+      .type(basicDetail.contacts.whatsapp);
 
+    cy.get("div[role='dialog']")
+      .find("button[type='submit']")
+      .should("be.enabled")
+      .click();
 
-        // Wait for the edit form to be visible
-        cy.get('#section-personaldetails', { timeout: 10000 })
-            .should('be.visible')
-            .should('not.be.disabled');
+    cy.get("body").type("{esc}");
 
-        // Click on the edit button
-        cy.xpath(`//*[@id="section-personaldetails"]/div/button/button/button`).click();
+    // Academic uploads
+    cy.uploadFile("#file-input-0", "marksheet10.jpeg");
+    cy.uploadFile("#file-input-1", "marksheet12.jpeg");
 
-        // Wait for the form to be fully loaded and interactive
-        cy.get('form', { timeout: 10000 }).should('be.visible');
+    // UG details
+    cy.get("input[placeholder='University Roll No.']")
+      .clear()
+      .type(ugDetail.academicDetails.universityRollNo);
 
-        // Wait for the input field to be visible and clickable
-        cy.get("input[name='first_name']", { timeout: 10000 })
-            .should('be.visible')
-            .should('not.be.disabled')
-            .click()
-            .clear()
-        //.type('Enter New Name Here');
+    cy.get("input[placeholder='College Name']")
+      .clear()
+      .type(ugDetail.academicDetails.collegeName);
 
-        cy.get("input[name='first_name']").clear();
+    // Course dropdown
+    cy.selectRadixDropdown(0, "Bachelor of Engineering (B.E./B.Eng.)");
 
-        cy.get('body')
+    // Branch dropdown (example)
+    cy.selectRadixDropdown(1, "Computer Science");
 
-        cy.wait(2000);
-        cy.get("input[name='first_name']")
-            .click()
-            .type('Mishra');
+    // Year of Passout dropdown (example)
+    cy.selectRadixDropdown(2, "2023");
 
-        //cy.get("#\:r8t\:-form-item").click()
+    // percentage and CGPA
 
-        // First ensure the form is visible
-        cy.get('form').should('be.visible');
+    // Percentage field
+    // Percentage
+    cy.get('input[name="graduation_percentage"]')
+      .should("be.visible")
+      .invoke("val", "")
+      .type(String(academicDetail.graduation.percentage));
 
-        cy.get("div[role='dialog'] p[class='text-right']>button[type='submit']").click();
+    cy.get('input[name="graduation_percentage"]')
+      .invoke("val")
+      .then((val) => {
+        expect(parseInt(val)).to.eq(academicDetail.graduation.percentage);
+      });
 
-        cy.wait(2000);
+    // CGPA
+    cy.get('input[name="graduation_cgpa"]')
+      .should("be.visible")
+      .invoke("val", "")
+      .type(String(academicDetail.graduation.cgpa));
 
-        cy.get("svg[class='h-4 w-4'][height='15']").click();
+    cy.get('input[name="graduation_cgpa"]')
+      .invoke("val")
+      .then((val) => {
+        expect(parseFloat(val)).to.eq(academicDetail.graduation.cgpa);
+      });
 
+    //save
+    // Trigger blur so React validates
+    cy.get('input[name="graduation_cgpa"]').blur();
 
-
-        cy.contains('button', 'Choose a file')
-            .scrollIntoView()
-            .should('be.visible')
-            .click();
-
-
-            cy.wait(2000);
-
-            cy.get("button[id='upload-button-0']").selectFile("/Users/apple/Desktop/Cypresskod/cypress/fixtures/image.jpeg")
-
-
-    });
+    // Scroll + click Save
+    cy.contains("button", "Save")
+      .scrollIntoView()
+      .should("be.visible")
+      .and("be.enabled")
+      .click();
+  });
 });

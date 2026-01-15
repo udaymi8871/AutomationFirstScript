@@ -1,34 +1,37 @@
 /// <reference types="cypress" />
 /// <reference types="cypress-xpath" />
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
+// Login Command
 Cypress.Commands.add('login', (email, password) => {
-    cy.visit('')
-    cy.get('#input-email').type(email)
-    cy.get('#input-password').type(password)
-    cy.get('input.btn.btn-primary').click()
-})
+    cy.visit('https://app.kodnest.in/login', { timeout: 40000 });
+    cy.get('body', { timeout: 10000 }).should('be.visible');
+    cy.get('#login-submit-button', { timeout: 10000 }).should('be.visible').should('not.be.disabled');
+    cy.get('.loader', { timeout: 10000 }).should('not.exist');
+    cy.get('#email-input', { timeout: 10000 }).should('be.visible').click().type(email, { timeout: 10000 });
+    cy.get('#password-input', { timeout: 10000 }).should('be.visible').should('not.be.disabled').click().type(password, { timeout: 10000 });
+    cy.get('#login-submit-button', { timeout: 10000 }).click();
+  });
+  
+  // File Upload 10th and 12th
+
+  Cypress.Commands.add('uploadFile', (fileInputSelector, fileName) => {
+    cy.get(fileInputSelector, { timeout: 10000 })
+      .should('exist')
+      .should('have.attr', 'type', 'file')
+      .selectFile(`cypress/fixtures/${fileName}`, { force: true });
+  });
+
+  //UG detail update command
+  
+  Cypress.Commands.add('selectRadixDropdown', (index, optionText) => {
+    cy.get("button[role='combobox']")
+      .eq(index)
+      .should('be.visible')
+      .click();
+  
+    cy.get('[role="option"]')
+      .contains(optionText)
+      .should('be.visible')
+      .click();
+  });
+  
