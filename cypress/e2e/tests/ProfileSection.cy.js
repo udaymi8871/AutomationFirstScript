@@ -67,9 +67,6 @@ describe("Profile Personal Details Update", () => {
     // Year of Passout dropdown (example)
     cy.selectRadixDropdown(2, "2023");
 
-    // percentage and CGPA
-
-    // Percentage field
     // Percentage
     cy.get('input[name="graduation_percentage"]')
       .should("be.visible")
@@ -95,7 +92,6 @@ describe("Profile Personal Details Update", () => {
       });
 
     //save
-    // Trigger blur so React validates
     cy.get('input[name="graduation_cgpa"]').blur();
 
     // Scroll + click Save
