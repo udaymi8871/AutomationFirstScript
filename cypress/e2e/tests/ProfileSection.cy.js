@@ -2,7 +2,6 @@ import user from "../../../cypress/fixtures/user.json";
 import basicDetail from "../../../cypress/fixtures/basicdetail.json";
 import ugDetail from "../../../cypress/fixtures/UGDetails.json";
 import academicDetail from "../../../cypress/fixtures/academicdetail.json";
-
 import "cypress-file-upload";
 
 describe("Profile Personal Details Update", () => {
@@ -45,9 +44,9 @@ describe("Profile Personal Details Update", () => {
 
     cy.get("body").type("{esc}");
 
-    // Academic uploads
-    cy.uploadFile("#file-input-0", "marksheet10.jpeg");
-    cy.uploadFile("#file-input-1", "marksheet12.jpeg");
+    // Academic details: 10th & 12th
+    cy.uploadFile('#file-input-0', 'marksheet10.jpeg');
+    cy.uploadFile('#file-input-1', 'marksheet12.jpeg');
 
     // UG details
     cy.get("input[placeholder='University Roll No.']")
@@ -100,5 +99,18 @@ describe("Profile Personal Details Update", () => {
       .should("be.visible")
       .and("be.enabled")
       .click();
+
+    //Final UG detail save toggle confirmation
+    cy.get('[role="dialog"]').within(() => {
+      cy.get('button[role="switch"]').each(($toggle) => {
+        
+        cy.wrap($toggle)
+          .should("have.attr", "aria-checked", "false")
+          .click()
+          .should("have.attr", "aria-checked", "true");
+      });
+
+      cy.contains("button", "Confirm & Save").should("be.enabled").click();
+    });
   });
 });
