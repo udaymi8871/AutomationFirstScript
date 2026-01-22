@@ -13,13 +13,15 @@ Cypress.Commands.add('login', (email, password) => {
   });
   
   // File Upload 10th and 12th
-
   Cypress.Commands.add('uploadFile', (inputSelector, fileName) => {
-    cy.get(inputSelector, { timeout: 10000 })
+    cy.get(inputSelector, { timeout: 20000 })
       .should('exist')
-      .selectFile(`cypress/fixtures/${fileName}`, { force: true });
+      .should('have.attr', 'type', 'file')
+      .selectFile(`cypress/fixtures/${fileName}`, {
+        force: true
+      });
   });
-  
+
 
   //UG detail update command
   

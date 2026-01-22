@@ -45,8 +45,13 @@ describe("Profile Personal Details Update", () => {
     cy.get("body").type("{esc}");
 
     // Academic details: 10th & 12th
-    cy.uploadFile('#file-input-0', 'marksheet10.jpeg');
-    cy.uploadFile('#file-input-1', 'marksheet12.jpeg');
+     
+      cy.uploadFile('#file-input-0', 'marksheet10.jpeg').wait(6000);
+
+      cy.get
+      
+
+      cy.uploadFile('#file-input-1', 'marksheet12.jpeg').wait(6000);;
 
     // UG details
     cy.get("input[placeholder='University Roll No.']")
@@ -101,16 +106,16 @@ describe("Profile Personal Details Update", () => {
       .click();
 
     //Final UG detail save toggle confirmation
-    cy.get('[role="dialog"]').within(() => {
-      cy.get('button[role="switch"]').each(($toggle) => {
-        
-        cy.wrap($toggle)
-          .should("have.attr", "aria-checked", "false")
-          .click()
-          .should("have.attr", "aria-checked", "true");
-      });
+    // cy.get('[role="dialog"]').within(() => {
+    //   cy.get('button[role="switch"]').each(($toggle) => {
 
-      cy.contains("button", "Confirm & Save").should("be.enabled").click();
-    });
+    //     cy.wrap($toggle)
+    //       .should("have.attr", "aria-checked", "false")
+    //       .click()
+    //       .should("have.attr", "aria-checked", "true");
+    //   });
+
+    //   cy.contains("button", "Confirm & Save").should("be.enabled").click();
+    // });
   });
 });

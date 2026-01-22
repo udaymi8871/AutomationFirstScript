@@ -1,48 +1,29 @@
-describe('Course Navigation', () => {
-
-    it('', () => {
-        // Arrange
-        cy.visit('https://app.kodnest.com/login');
+describe('KodNest course flow', () => {
+    const email = 'uday+practicebatch1-c@kodnest.com';
+    const password = 'Uday@123';
   
-        // Optional: wait for loader if it exists
-        cy.get('.loader', { timeout: 10000 }).should('not.exist');
-        cy.get('input[name="email"]').type('uday+practicebatch1-b@kodnest.com')
-        cy.get('input[name="password"]').type('Uday@123')
-        
-        cy.get('button[type="submit"]').click()
-        cy.get('.loader', { timeout: 10000 }).should('not.exist');
+    it('login -> open course -> next', () => {
+      // 1) Open login page
+      cy.visit('https://app.kodnest.com/login');
+      cy.viewport(1400, 877);
   
-       //cy.get('#header-item-1 > div > span').should('be.visible').click();
-       cy.contains('span', 'Courses').should('be.visible').click();
-
-       cy.get('.loader', { timeout: 10000 }).should('not.exist');
-
-       cy.contains('button', 'View Syllabus').click();
-
-       cy.get('.loader', { timeout: 10000 }).should('not.exist');
-
-       cy.get('svg.text-black').click({ multiple: true });
-
-       cy.get('.loader', { timeout: 10000 }).should('not.exist');
-
-       //cy.get('div#subtopic-undefined').find('svg.text-amber-400').click();
-       
-        cy.get('div[id^="subtopic-"]').should('exist').first().find('svg.text-amber-400').click();
-
-
-       cy.get('#next-button').click();
-
-       cy.get('.loader', { timeout: 10000 }).should('not.exist')
-
-       cy.get('#next-button').click();
-
-        cy.get('#next-button').click()
-
-        // Act
-    
-        // Assert
-    
+      // 2) Fill login form (update selectors from your actual HTML)
+      cy.get('input[type="email"]').type(email);
+      cy.get('input[type="password"]').type(password);
+      cy.contains('button', 'Log', { matchCase: false }).click();
+  
+      // 3) Open Courses (replace selector with real one from your HTML)
+      cy.contains('Courses', { matchCase: false }).click();
+  
+      // 4) Click View Syllabus (use the full button element you have)
+      cy.contains('span', 'View Syllabus').click();
+  
+      // 5) Module and topic icons (use the path you already shared)
+      cy.get('path[d="M12 4v16m8-8H4"]').first().click({ force: true });
+      cy.get('path[d="M12 4v16m8-8H4"]').eq(1).click({ force: true });
+  
+      // 6) Next button
+      cy.get('#next-button').click();
     });
-  
   });
   
